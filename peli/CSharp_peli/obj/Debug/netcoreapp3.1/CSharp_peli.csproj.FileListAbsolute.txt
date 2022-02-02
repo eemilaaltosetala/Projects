@@ -1,0 +1,13 @@
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.csprojAssemblyReference.cache
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.AssemblyInfoInputs.cache
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.AssemblyInfo.cs
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.csproj.CoreCompileInputs.cache
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.exe
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.deps.json
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.runtimeconfig.json
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.runtimeconfig.dev.json
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.dll
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\bin\Debug\netcoreapp3.1\CSharp_peli.pdb
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.dll
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.pdb
+C:\Users\eemil\Desktop\samk\cv\projects\peli\CSharp_peli\obj\Debug\netcoreapp3.1\CSharp_peli.genruntimeconfig.cache
