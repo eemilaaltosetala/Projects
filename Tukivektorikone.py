@@ -8,7 +8,7 @@ from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 
-data = pd.read_csv("C:/Users/eemil/Desktop/samk/data-analytics/koneoppiminen(3)/framingham.csv")
+data = pd.read_csv("C:/framingham.csv")
 
 #poistetaan puuttuvaa tietoa sis. rivit
 data = data.dropna()
