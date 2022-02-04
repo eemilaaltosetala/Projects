@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using static System.Console;
 
-namespace Tentti03
+namespace peli
 {
     //staattinen luokka Sovellus
     static class Sovellus
