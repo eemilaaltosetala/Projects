@@ -1,7 +1,7 @@
 ﻿using System;
 using static System.Console;
 
-namespace Tentti03
+namespace peli
 {
     class Program
     {
