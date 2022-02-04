@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 
-data = pd.read_csv('C:/Users/eemil/Desktop/samk/data-analytics/koneoppiminen(3)/koneoppiminen1(py)/framingham.csv')
+data = pd.read_csv('C:/framingham.csv')
 
 #tutkitaan onko puuttuvia tietoja
 print('Datan puuttuvat arvot:\n', data.isnull().sum())
