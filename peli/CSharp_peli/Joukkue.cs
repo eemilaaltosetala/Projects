@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tentti03
+namespace peli
 {
     //Luokka Joukkue, toteuttaa rajapintaa IOsallistuja
     class Joukkue : IOsallistuja
