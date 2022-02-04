@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tentti03
+namespace peli
 {
     //Luokka Kilpailu, joka on geneerinen
     class Kilpailu<TOsallisuja, TTulos>
