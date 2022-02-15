@@ -1,150 +1,168 @@
--- as of 31.1.2022
+-- AS OF 31.1.2022      data source: https://ourworldindata.org/coronavirus
 
-select *
-from CovidDeaths
-where continent is not null
-order by 3,4
+SELECT *
+FROM COVIDDEATHS
+WHERE CONTINENT IS NOT NULL
+ORDER BY 3,4
 
---select * 
---from CovidVaccinations
---order by 3,4
+--SELECT * 
+--FROM COVIDVACCINATIONS
+--ORDER BY 3,4
 
---select relevant data
+--SELECT RELEVANT DATA
 
-select location, date, total_cases, new_cases, total_deaths, population
-from CovidDeaths
-order by 1,2
-
-
--- total cases vs total deaths
--- chance % of dying if positive
-select location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as deaths_per_cases
-from CovidDeaths
-where location = 'Finland'
-order by 1,2
+SELECT LOCATION, DATE, TOTAL_CASES, NEW_CASES, TOTAL_DEATHS, POPULATION
+FROM COVIDDEATHS
+ORDER BY 1,2
 
 
--- total cases in population
--- % of population that have been diagnosed
--- Finland 8,8%
-select location, date, total_cases, population, (total_cases/population)*100 as cases_per_population
-from CovidDeaths
-where location = 'Finland'
-order by 1,2
+-- TOTAL CASES VS TOTAL DEATHS
+-- CHANCE % OF DYING IF POSITIVE
+SELECT LOCATION, DATE, TOTAL_CASES, TOTAL_DEATHS, (TOTAL_DEATHS/TOTAL_CASES)*100 AS DEATHS_PER_CASES
+FROM COVIDDEATHS
+WHERE LOCATION = 'FINLAND'
+ORDER BY 1,2
 
 
--- countries with highest cases per population %
--- 46% of Andorra has had covid
-select location, population, MAX(total_cases) as InfectionRate, max((total_cases/population))*100 as infected_population_percentage
-from CovidDeaths
-group by location, population
-order by infected_population_percentage desc
+-- TOTAL CASES IN POPULATION
+-- % OF POPULATION THAT HAVE BEEN DIAGNOSED
+-- FINLAND 8,8%
+SELECT LOCATION, DATE, TOTAL_CASES, POPULATION, (TOTAL_CASES/POPULATION)*100 AS CASES_PER_POPULATION
+FROM COVIDDEATHS
+WHERE LOCATION = 'FINLAND'
+ORDER BY 1,2
 
 
-
--- highest deaths by continent
-select continent, MAX(cast(total_deaths as int)) as death_count
-from CovidDeaths
-where continent is not null
-group by continent
-order by death_count desc
+-- COUNTRIES WITH HIGHEST CASES PER POPULATION %
+-- 46% OF ANDORRA HAS HAD COVID
+SELECT LOCATION, POPULATION, MAX(TOTAL_CASES) AS INFECTIONRATE, MAX((TOTAL_CASES/POPULATION))*100 AS INFECTED_POPULATION_PERCENTAGE
+FROM COVIDDEATHS
+GROUP BY LOCATION, POPULATION
+ORDER BY INFECTED_POPULATION_PERCENTAGE DESC
 
 
 
--- global deaths per cases percentage
-select SUM(new_cases) as cases, SUM(cast(new_deaths as int)) as deaths, SUM(cast(new_deaths as int))/Sum(new_cases)*100 as DeathPercentage
-from CovidDeaths
-where continent is not null
-order by 1,2
+-- HIGHEST DEATHS BY CONTINENT
+SELECT CONTINENT, MAX(CAST(TOTAL_DEATHS AS INT)) AS DEATH_COUNT
+FROM COVIDDEATHS
+WHERE CONTINENT IS NOT NULL
+GROUP BY CONTINENT
+ORDER BY DEATH_COUNT DESC
 
 
---highest cases per day in Finland
 
-select MAX(new_cases) as most_cases_per_day, location
-from CovidDeaths
-where location = 'Finland'
-group by location
---the date
-select date
-from CovidDeaths
-where new_cases = 14439
+-- GLOBAL DEATHS PER CASES PERCENTAGE
+SELECT SUM(NEW_CASES) AS CASES, SUM(CAST(NEW_DEATHS AS INT)) AS DEATHS, SUM(CAST(NEW_DEATHS AS INT))/SUM(NEW_CASES)*100 AS DEATHPERCENTAGE
+FROM COVIDDEATHS
+WHERE CONTINENT IS NOT NULL
+ORDER BY 1,2
 
 
--- global vaccinations per population
-select d.continent, d.location, d.date, d.population, v.new_vaccinations,
-SUM(cast(v.new_vaccinations as float)) OVER (partition by d.location
-order by d.location, d.date) as total_people_vaccinated
-from CovidDeaths d
-join CovidVaccinations v
-on d.location = v.location
-and d.date = v.date
-where d.continent is not null
-order by 2,3
+--HIGHEST CASES PER DAY IN FINLAND
+
+SELECT MAX(NEW_CASES) AS MOST_CASES_PER_DAY, LOCATION
+FROM COVIDDEATHS
+WHERE LOCATION = 'FINLAND'
+GROUP BY LOCATION
+--THE DATE
+SELECT DATE
+FROM COVIDDEATHS
+WHERE NEW_CASES = 14439
 
 
---cte percentage_of_people_vaccinated
-with population_vs_vaccination (continent, location, date, population, new_vaccinations, total_people_vaccinated)
-as
+-- GLOBAL VACCINATIONS PER POPULATION
+SELECT D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION, V.NEW_VACCINATIONS,
+SUM(CAST(V.NEW_VACCINATIONS AS FLOAT)) OVER (PARTITION BY D.LOCATION
+ORDER BY D.LOCATION, D.DATE) AS TOTAL_PEOPLE_VACCINATED
+FROM COVIDDEATHS D
+JOIN COVIDVACCINATIONS V
+ON D.LOCATION = V.LOCATION
+AND D.DATE = V.DATE
+WHERE D.CONTINENT IS NOT NULL
+ORDER BY 2,3
+
+
+--PPL VACCINATED BY COUNTRY
+
+SELECT D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION
+, MAX(V.TOTAL_VACCINATIONS) AS ROLLINGPEOPLEVACCINATED
+--, (ROLLINGPEOPLEVACCINATED/POPULATION)*100
+FROM COVIDDEATHS D
+JOIN COVIDVACCINATIONS V
+	ON D.LOCATION = V.LOCATION
+	AND D.DATE = V.DATE
+WHERE D.CONTINENT IS NOT NULL 
+GROUP BY D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION
+ORDER BY 1,2,3
+
+
+--CTE PERCENTAGE_OF_PEOPLE_VACCINATED
+WITH POPULATION_VS_VACCINATION (CONTINENT, LOCATION, DATE, POPULATION, NEW_VACCINATIONS, TOTAL_PEOPLE_VACCINATED)
+AS
 
 (
-select d.continent, d.location, d.date, d.population, v.new_vaccinations,
-SUM(cast(v.new_vaccinations as float)) OVER (partition by d.location
-order by d.location, d.date) as total_people_vaccinated
-from CovidDeaths d
-join CovidVaccinations v
-on d.location = v.location
-and d.date = v.date
-where d.continent is not null
---order by 2,3
+SELECT D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION, V.NEW_VACCINATIONS,
+SUM(CAST(V.NEW_VACCINATIONS AS FLOAT)) OVER (PARTITION BY D.LOCATION
+ORDER BY D.LOCATION, D.DATE) AS TOTAL_PEOPLE_VACCINATED
+FROM COVIDDEATHS D
+JOIN COVIDVACCINATIONS V
+ON D.LOCATION = V.LOCATION
+AND D.DATE = V.DATE
+WHERE D.CONTINENT IS NOT NULL
+--ORDER BY 2,3
 )
-select *, (total_people_vaccinated/population)*100 as percentage_of_people_vaccinated
-from 
-population_vs_vaccination
+SELECT *, (TOTAL_PEOPLE_VACCINATED/POPULATION)*100 AS PERCENTAGE_OF_PEOPLE_VACCINATED
+FROM 
+POPULATION_VS_VACCINATION
 
 
 
--- with temp
+-- WITH TEMP
 
-drop table if exists #PercentageVaccinated
-create table #PercentageVaccinated
+DROP TABLE IF EXISTS #PERCENTAGEVACCINATED
+CREATE TABLE #PERCENTAGEVACCINATED
 (
-Continent nvarchar(255),
-Location nvarchar(255),
-Date datetime,
-Population numeric,
-New_vaccinations numeric,
-total_people_vaccinated numeric
+CONTINENT NVARCHAR(255),
+LOCATION NVARCHAR(255),
+DATE DATETIME,
+POPULATION NUMERIC,
+NEW_VACCINATIONS NUMERIC,
+TOTAL_PEOPLE_VACCINATED NUMERIC
 )
 
 
-insert into #PercentageVaccinated
-select d.continent, d.location, d.date, d.population, v.new_vaccinations,
-SUM(cast(v.new_vaccinations as float)) OVER (partition by d.location
-order by d.location, d.date) as total_people_vaccinated
-from CovidDeaths d
-join CovidVaccinations v
-on d.location = v.location
-and d.date = v.date
---where d.continent is not null
---order by 2,3
+INSERT INTO #PERCENTAGEVACCINATED
+SELECT D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION, V.NEW_VACCINATIONS,
+SUM(CAST(V.NEW_VACCINATIONS AS FLOAT)) OVER (PARTITION BY D.LOCATION
+ORDER BY D.LOCATION, D.DATE) AS TOTAL_PEOPLE_VACCINATED
+FROM COVIDDEATHS D
+JOIN COVIDVACCINATIONS V
+ON D.LOCATION = V.LOCATION
+AND D.DATE = V.DATE
+--WHERE D.CONTINENT IS NOT NULL
+--ORDER BY 2,3
 
-select *, (total_people_vaccinated/population)*100 as percentage_of_people_vaccinated
-from #PercentageVaccinated
+SELECT *, (TOTAL_PEOPLE_VACCINATED/POPULATION)*100 AS PERCENTAGE_OF_PEOPLE_VACCINATED
+FROM #PERCENTAGEVACCINATED
 
 
 
---view(s) for visualizations 
+--VIEW(S) FOR VISUALIZATIONS 
 
-create view 
-PercentageVaccinated as 
-select d.continent, d.location, d.date, d.population, v.new_vaccinations,
-SUM(cast(v.new_vaccinations as float)) OVER (partition by d.location
-order by d.location, d.date) as total_people_vaccinated
-from CovidDeaths d
-join CovidVaccinations v
-on d.location = v.location
-and d.date = v.date
-where d.continent is not null
+CREATE VIEW 
+PERCENTAGEVACCINATED AS 
+SELECT D.CONTINENT, D.LOCATION, D.DATE, D.POPULATION, V.NEW_VACCINATIONS,
+SUM(CAST(V.NEW_VACCINATIONS AS FLOAT)) OVER (PARTITION BY D.LOCATION
+ORDER BY D.LOCATION, D.DATE) AS TOTAL_PEOPLE_VACCINATED
+FROM COVIDDEATHS D
+JOIN COVIDVACCINATIONS V
+ON D.LOCATION = V.LOCATION
+AND D.DATE = V.DATE
+WHERE D.CONTINENT IS NOT NULL
+
+
+
+
 
 
 
