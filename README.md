@@ -1,2 +1,2 @@
 # RandomProjects
-school and personal projects made by me
+school and personal projects 
